@@ -1,0 +1,327 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .form-wrap { max-width: 660px; padding: 1.5rem 0; }
+  .section { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .section-title { font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 5px; }
+  label .hint { font-weight: 400; color: var(--color-text-secondary); font-size: 12px; margin-left: 4px; }
+  label .req { color: #D85A30; margin-left: 2px; }
+  input[type=text], input[type=email], input[type=tel], input[type=url], textarea, select {
+    width: 100%; font-size: 14px; font-family: var(--font-sans);
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 8px 12px; color: var(--color-text-primary);
+    resize: vertical;
+  }
+  input[type=text]:focus, input[type=email]:focus, input[type=tel]:focus, input[type=url]:focus, textarea:focus, select:focus {
+    outline: none; border-color: #378ADD; box-shadow: 0 0 0 3px rgba(55,138,221,0.15);
+  }
+  textarea { min-height: 90px; line-height: 1.5; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--color-text-primary); cursor: pointer; }
+  .checkbox-item input { width: 16px; height: 16px; accent-color: #378ADD; cursor: pointer; }
+  .add-btn { background: transparent; border: 0.5px dashed var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 7px 14px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer; margin-top: 8px; width: 100%; }
+  .add-btn:hover { background: var(--color-background-secondary); }
+  .dynamic-list { display: flex; flex-direction: column; gap: 8px; }
+  .dynamic-item { display: flex; gap: 8px; align-items: center; }
+  .dynamic-item input { flex: 1; }
+  .remove-btn { background: transparent; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); width: 30px; height: 30px; font-size: 16px; color: var(--color-text-secondary); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .remove-btn:hover { border-color: #E24B4A; color: #E24B4A; }
+  .submit-area { text-align: center; padding: 1.5rem 0 0.5rem; }
+  .submit-btn { background: #185FA5; color: #E6F1FB; border: none; border-radius: var(--border-radius-md); padding: 12px 40px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: var(--font-sans); }
+  .submit-btn:hover { background: #0C447C; }
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+  .progress-step { flex: 1; height: 4px; border-radius: 2px; background: var(--color-border-tertiary); }
+  .progress-step.done { background: #378ADD; }
+  .badge { display: inline-block; background: var(--color-background-info); color: var(--color-text-info); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+  .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+  .swatch.selected { border-color: var(--color-text-primary); }
+  .color-note { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; }
+  select option { color: var(--color-text-primary); }
+</style>
+
+<h2 class="sr-only">Formulário de coleta de informações para criação de landing page</h2>
+<div class="form-wrap">
+  <div class="progress-bar" id="progress">
+    <div class="progress-step done"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+  </div>
+
+  <!-- 1. Identidade -->
+  <div class="section">
+    <div class="section-title">1. Identidade pessoal</div>
+
+    <div class="row">
+      <div class="field">
+        <label>Nome completo <span class="req">*</span></label>
+        <input type="text" id="f-nome" placeholder="Ex: Sonisley Machado" oninput="updateProgress()">
+      </div>
+      <div class="field">
+        <label>Nome que aparece na página <span class="req">*</span></label>
+        <input type="text" id="f-nomepag" placeholder="Como quer ser chamada/o" oninput="updateProgress()">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Título / Área de atuação <span class="req">*</span></label>
+      <input type="text" id="f-titulo" placeholder="Ex: Medicina Chinesa, Acupuntura e Aromaterapia" oninput="updateProgress()">
+    </div>
+
+    <div class="field">
+      <label>Sobre você <span class="hint">(conte sobre família, hobbies, rotinas, o que conecta com seu público)</span></label>
+      <textarea id="f-sobre" placeholder="Escreva aqui um texto pessoal que gere identificação com seu público..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Foto de perfil principal <span class="req">*</span></label>
+      <input type="text" placeholder="Link da foto (Google Drive, Dropbox, etc)" id="f-foto">
+    </div>
+  </div>
+
+  <!-- 2. Experiência -->
+  <div class="section">
+    <div class="section-title">2. Formação & experiência</div>
+
+    <div class="field">
+      <label>Onde estudou <span class="hint">(liste as formações relacionadas aos serviços oferecidos)</span></label>
+      <div class="dynamic-list" id="educacao-list">
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Aromaterapia — Instituto XYZ, 2018"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Acupuntura — Escola ABC, 2015"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('educacao-list', 'Adicionar formação')">+ Adicionar formação</button>
+    </div>
+
+    <div class="field">
+      <label>Habilidades como profissional <span class="hint">(atributos que te diferenciam)</span></label>
+      <div class="dynamic-list" id="skills-list">
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Visão holística da situação"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Trato sem métodos invasivos"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Excelente ouvinte"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('skills-list', 'Nova habilidade')">+ Adicionar habilidade</button>
+    </div>
+
+    <div class="field">
+      <label>Experiência na área <span class="hint">(como aprendeu, o que a levou a estudar, casos de sucesso)</span></label>
+      <textarea id="f-experiencia" placeholder="Conte sua trajetória, o que te motivou, principais resultados com clientes..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Há quantos anos atua na área? <span class="req">*</span></label>
+      <input type="text" id="f-anos" placeholder="Ex: mais de 20 anos" oninput="updateProgress()">
+    </div>
+  </div>
+
+  <!-- 3. Serviços -->
+  <div class="section">
+    <div class="section-title">3. Serviços oferecidos <span class="badge">Presencial / Virtual</span></div>
+
+    <div class="field">
+      <label>Serviços presenciais <span class="hint">(inclua nome e número de sessões)</span></label>
+      <div class="dynamic-list" id="presencial-list">
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Aromaterapia — 2 sessões"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Acupuntura — 4 sessões"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('presencial-list', 'Novo serviço presencial')">+ Adicionar serviço</button>
+    </div>
+
+    <div class="field">
+      <label>Serviços virtuais <span class="hint">(área exclusiva para membros, se houver)</span></label>
+      <div class="dynamic-list" id="virtual-list">
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Consulta online via Meeting360"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('virtual-list', 'Novo serviço virtual')">+ Adicionar serviço</button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Formas de atendimento</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" checked> Presencial</label>
+          <label class="checkbox-item"><input type="checkbox"> Virtual / Online</label>
+          <label class="checkbox-item"><input type="checkbox"> Meeting360</label>
+          <label class="checkbox-item"><input type="checkbox"> Outro</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Link para ver valores <span class="hint">(botão "Ver valores")</span></label>
+        <input type="url" placeholder="https://...">
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Produtos -->
+  <div class="section">
+    <div class="section-title">4. Produtos disponibilizados</div>
+
+    <div class="field">
+      <label>Lista de produtos <span class="hint">(físicos, digitais, assinatura)</span></label>
+      <div class="dynamic-list" id="produtos-list">
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Blend para Emoções — Delivery"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Ex: Ebook sobre Aromaterapia — Digital"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('produtos-list', 'Novo produto')">+ Adicionar produto</button>
+    </div>
+
+    <div class="field">
+      <label>Formas de entrega dos produtos</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Delivery</label>
+        <label class="checkbox-item"><input type="checkbox"> Box de Assinatura</label>
+        <label class="checkbox-item"><input type="checkbox"> Meeting360</label>
+        <label class="checkbox-item"><input type="checkbox"> Download digital</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Galeria -->
+  <div class="section">
+    <div class="section-title">5. Galeria de fotos</div>
+    <div class="field">
+      <label>Links das fotos <span class="hint">(fotos em atividade, atendimentos, eventos)</span></label>
+      <div class="dynamic-list" id="fotos-list">
+        <div class="dynamic-item"><input type="text" placeholder="Link da foto 1"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Link da foto 2"></div>
+        <div class="dynamic-item"><input type="text" placeholder="Link da foto 3"></div>
+      </div>
+      <button class="add-btn" onclick="addItem('fotos-list', 'Link da foto')">+ Adicionar foto</button>
+    </div>
+  </div>
+
+  <!-- 6. CTA Final -->
+  <div class="section">
+    <div class="section-title">6. Chamada final & contato</div>
+
+    <div class="field">
+      <label>Texto da seção "Estou te esperando!" <span class="hint">(mensagem de encerramento da página)</span></label>
+      <textarea id="f-cta" placeholder="Ex: Quero ajudar você a encontrar o seu equilíbrio com todas as ferramentas que estudei por mais de 20 anos..."></textarea>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>WhatsApp / Telefone</label>
+        <input type="tel" placeholder="(xx) xxxxx-xxxx">
+      </div>
+      <div class="field">
+        <label>E-mail de contato</label>
+        <input type="email" placeholder="seu@email.com">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Instagram / Redes sociais</label>
+      <input type="url" placeholder="https://instagram.com/...">
+    </div>
+
+    <div class="field">
+      <label>Link do ClubEssenser ou plataforma principal</label>
+      <input type="url" placeholder="https://...">
+    </div>
+  </div>
+
+  <!-- 7. Visual -->
+  <div class="section">
+    <div class="section-title">7. Identidade visual</div>
+
+    <div class="field">
+      <label>Cores preferidas da página <span class="hint">(clique para selecionar)</span></label>
+      <div class="color-swatches" id="swatches">
+        <div class="swatch" style="background:#F5A623" onclick="toggleSwatch(this)" title="Amarelo/Dourado"></div>
+        <div class="swatch" style="background:#2D3092" onclick="toggleSwatch(this)" title="Azul escuro"></div>
+        <div class="swatch" style="background:#1D9E75" onclick="toggleSwatch(this)" title="Verde"></div>
+        <div class="swatch" style="background:#D85A30" onclick="toggleSwatch(this)" title="Coral"></div>
+        <div class="swatch" style="background:#993556" onclick="toggleSwatch(this)" title="Rosa escuro"></div>
+        <div class="swatch" style="background:#534AB7" onclick="toggleSwatch(this)" title="Roxo"></div>
+        <div class="swatch" style="background:#444441" onclick="toggleSwatch(this)" title="Cinza escuro"></div>
+        <div class="swatch" style="background:#FFFFFF; border: 0.5px solid #ccc;" onclick="toggleSwatch(this)" title="Branco"></div>
+      </div>
+      <p class="color-note">Ou descreva as cores no campo abaixo (ex: dourado e azul marinho, como no exemplo)</p>
+      <input type="text" placeholder="Ex: amarelo dourado + azul escuro + branco" style="margin-top:8px;">
+    </div>
+
+    <div class="field">
+      <label>Tem logo ou marca? <span class="hint">(link para o arquivo)</span></label>
+      <input type="text" placeholder="Link do logo (PNG ou SVG preferencialmente)">
+    </div>
+
+    <div class="field">
+      <label>Referências de páginas que você gosta <span class="hint">(opcional)</span></label>
+      <textarea placeholder="Cole links ou descreva o estilo que te agrada..." style="min-height:60px;"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Observações gerais</label>
+      <textarea placeholder="Qualquer informação adicional que achar importante incluir na sua página..." style="min-height:70px;"></textarea>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button class="submit-btn" onclick="submitForm()">Gerar minha landing page ↗</button>
+  </div>
+</div>
+
+<script>
+function addItem(listId, placeholder) {
+  const list = document.getElementById(listId);
+  const div = document.createElement('div');
+  div.className = 'dynamic-item';
+  div.innerHTML = '<input type="text" placeholder="' + placeholder + '"><button class="remove-btn" onclick="this.parentElement.remove()">×</button>';
+  list.appendChild(div);
+}
+
+function toggleSwatch(el) {
+  el.classList.toggle('selected');
+}
+
+function updateProgress() {
+  const fields = ['f-nome','f-nomepag','f-titulo','f-anos'];
+  const filled = fields.filter(id => document.getElementById(id)?.value.trim()).length;
+  const steps = document.querySelectorAll('.progress-step');
+  const total = steps.length;
+  const filled7 = Math.round((filled / fields.length) * (total - 1)) + 1;
+  steps.forEach((s, i) => s.classList.toggle('done', i < filled7));
+}
+
+function submitForm() {
+  const nome = document.getElementById('f-nome')?.value.trim();
+  const titulo = document.getElementById('f-titulo')?.value.trim();
+  if (!nome || !titulo) {
+    alert('Por favor, preencha pelo menos o nome e a área de atuação antes de continuar.');
+    return;
+  }
+
+  function getList(id) {
+    return Array.from(document.querySelectorAll('#' + id + ' input'))
+      .map(i => i.value.trim()).filter(Boolean).join(', ');
+  }
+
+  const resumo = [
+    'Nome: ' + nome,
+    'Título: ' + titulo,
+    'Sobre: ' + (document.getElementById('f-sobre')?.value || ''),
+    'Anos de experiência: ' + (document.getElementById('f-anos')?.value || ''),
+    'Formação: ' + getList('educacao-list'),
+    'Habilidades: ' + getList('skills-list'),
+    'Experiência: ' + (document.getElementById('f-experiencia')?.value || ''),
+    'Serviços presenciais: ' + getList('presencial-list'),
+    'Serviços virtuais: ' + getList('virtual-list'),
+    'Produtos: ' + getList('produtos-list'),
+    'CTA final: ' + (document.getElementById('f-cta')?.value || ''),
+    'Fotos: ' + getList('fotos-list'),
+  ].join('\n');
+
+  sendPrompt('Com base nas seguintes informações, crie a landing page completa em HTML:\n\n' + resumo);
+}
+</script>
